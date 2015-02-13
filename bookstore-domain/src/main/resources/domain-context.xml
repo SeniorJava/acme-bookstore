@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/data/jpa
+       http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd">
+
+    <!-- PostgreSQL DataSource -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://localhost:5433/postgres"/>
+        <property name="username" value="bookstore"/>
+        <property name="password" value="acme"/>
+    </bean>
+
+    <!-- EntityManager factory -->
+    <bean id="bookstoreEMF" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="acme.sales.bookstore.domain.entities"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        </property>
+        <property name="jpaPropertyMap">
+            <map>
+                <entry key="hibernate.dialect" value="org.hibernate.dialect.PostgresPlusDialect"/>
+                <entry key="hibernate.connection.autocommit" value="false"/>
+            </map>
+        </property>
+    </bean>
+    
+    <!-- Repositories -->
+    <jpa:repositories base-package="acme.sales.bookstore.domain.repositories"
+                      entity-manager-factory-ref="bookstoreEMF"
+                      transaction-manager-ref="txManager"/>
+
+    <!-- Transactions -->
+    <bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="bookstoreEMF"/>
+    </bean>
+
+    <!-- Services -->
+    <bean id="bookOrderService" class="acme.sales.bookstore.domain.services.BookOrderServiceImpl"/>
+</beans>
