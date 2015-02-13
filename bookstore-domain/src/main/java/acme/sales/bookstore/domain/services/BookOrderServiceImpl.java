@@ -39,6 +39,7 @@ public class BookOrderServiceImpl implements BookOrderService {
 
     @Override
     public void confirmOrder(BookOrder bookOrder) {
-
+        bookOrder.setStatus(Status.ACCEPTED);
+        orderRepository.save(bookOrder);
     }
 }

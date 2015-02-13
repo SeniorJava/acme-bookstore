@@ -67,4 +67,18 @@ public class BookOrderServiceTest extends AbstractTransactionalTestNGSpringConte
         assertTrue(newLine.getId() > 0, "Order line saved");
         assertEquals(newLine.getBook().getTitle(), "War and peace", "Book title");
     }
+
+    @Test
+    public void shouldChangeOrderStatusWhenConfirmOrder() {
+        BookOrder bookOrder = bookOrderService.prepareOrder(aClient());
+
+        Book book = aBook("War and peace")
+                .author("Leo Tolstoy").genre("Prose").priced(200.22).build();
+        bookRepository.save(book);
+
+        bookOrderService.addBook(bookOrder, book, 2);
+
+        bookOrderService.confirmOrder(bookOrder);
+        assertEquals(bookOrder.getStatus(), Status.ACCEPTED, "Order status");
+    }
 }
