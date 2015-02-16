@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>bookstore-domain</artifactId>
+    <description>Domain model for ACME Bookstore (entities and services)</description>
 
     <dependencies>
 
@@ -34,17 +35,14 @@
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.0-api</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -73,7 +71,6 @@
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>9.4-1200-jdbc41</version>
-                <scope>test</scope>
             </dependency>
     </dependencies>
 </project>
