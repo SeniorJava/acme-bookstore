@@ -8,6 +8,15 @@ import javax.persistence.*;
 @Entity
 @Table(name = "book_order_line", schema = "acme_bookstore")
 public class BookOrderLine {
+
+    public BookOrderLine() {
+    }
+
+    public BookOrderLine(Book book, int qty) {
+        this.book = book;
+        this.qty = qty;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

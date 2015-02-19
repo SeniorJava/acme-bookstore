@@ -1,6 +1,7 @@
 package acme.sales.bookstore.domain.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -30,6 +31,10 @@ public class BookOrder {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private Collection<BookOrderLine> lines;
+
+    public BookOrder() {
+        this.lines = new ArrayList<>();
+    }
 
     public int getId() {
         return id;
@@ -77,5 +82,15 @@ public class BookOrder {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    @Transient
+    public double getTotalPrice() {
+        double total = 0.0;
+        for (BookOrderLine line : lines) {
+            total += line.getPrice() * line.getQty();
+        }
+
+        return total;
     }
 }

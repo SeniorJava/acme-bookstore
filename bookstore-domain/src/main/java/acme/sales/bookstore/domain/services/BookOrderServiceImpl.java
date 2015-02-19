@@ -2,6 +2,7 @@ package acme.sales.bookstore.domain.services;
 
 import acme.sales.bookstore.domain.entities.*;
 import acme.sales.bookstore.domain.repositories.BookOrderRepository;
+import acme.sales.bookstore.domain.repositories.BookRepository;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -13,6 +14,9 @@ public class BookOrderServiceImpl implements BookOrderService {
 
     @Inject
     private BookOrderRepository orderRepository;
+
+    @Inject
+    private BookRepository bookRepository;
 
     @Override
     public BookOrder prepareOrder(Client client) {
