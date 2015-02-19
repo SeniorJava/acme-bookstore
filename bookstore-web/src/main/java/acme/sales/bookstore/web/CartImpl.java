@@ -8,8 +8,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.Integer.parseInt;
@@ -24,20 +23,16 @@ public class CartImpl implements Cart {
     @Inject
     private BookRepository bookRepository;
 
-    private List<BookOrderLine> lines;
+    private Map<Integer, BookOrderLine> bookLines;
     private Client client;
 
     public CartImpl() {
-        this.lines = new ArrayList<>();
+        this.bookLines = new HashMap<>();
     }
 
     @Override
-    public List<BookOrderLine> getLines() {
-        return lines;
-    }
-
-    public void setLines(List<BookOrderLine> lines) {
-        this.lines = lines;
+    public Iterable<BookOrderLine> getLines() {
+        return bookLines.values();
     }
 
     public Client getClient() {
@@ -51,7 +46,7 @@ public class CartImpl implements Cart {
     @Override
     public void clear() {
         this.client = null;
-        this.lines.clear();
+        this.bookLines.clear();
     }
 
     @Override
@@ -59,12 +54,18 @@ public class CartImpl implements Cart {
         for (Map.Entry<String, String> lineEntry : lines.entrySet()) {
             int bookID = parseInt(lineEntry.getKey());
             int qty = parseInt(lineEntry.getValue());
+
             if (qty <= 0) {
                 continue;
             }
 
-            Book book = bookRepository.findOne(bookID);
-            this.lines.add(new BookOrderLine(book, qty));
+            if (bookLines.containsKey(bookID)) {
+                BookOrderLine line = bookLines.get(bookID);
+                line.setQty(line.getQty() + qty);
+            } else {
+                Book book = bookRepository.findOne(bookID);
+                this.bookLines.put(bookID, new BookOrderLine(book, qty));
+            }
         }
     }
 
@@ -72,11 +73,11 @@ public class CartImpl implements Cart {
     public String getStatus() {
         int qty = 0;
         double total = 0.0;
-        for (BookOrderLine line : lines) {
+        for (BookOrderLine line : bookLines.values()) {
             qty += line.getQty();
             total += line.getQty() * line.getBook().getPrice();
         }
 
-        return String.format("Books selected: %d, total price: %0.2f", qty, total);
+        return String.format("Books selected: %d, total price: %.2f", qty, total);
     }
 }

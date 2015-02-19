@@ -44,7 +44,7 @@
         </tbody>
     </table>
     <ul class="nav nav-pills right">
-        <li class="active"><a href="makePurchase">Make purchase</a></li>
+        <li class="active"><a href="selectClient">Make purchase</a></li>
         <li><a href="newPurchase">Clear cart</a></li>
         <li><a href="selectBooks">Select books</a></li>
     </ul>

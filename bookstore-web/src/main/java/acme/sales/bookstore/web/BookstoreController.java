@@ -1,6 +1,7 @@
 package acme.sales.bookstore.web;
 
 import acme.sales.bookstore.domain.repositories.BookRepository;
+import acme.sales.bookstore.domain.repositories.ClientRepository;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,9 @@ public class BookstoreController {
     @Inject
     private BookRepository bookRepository;
 
+    @Inject
+    private ClientRepository clientRepository;
+
     @RequestMapping("/newPurchase")
     public ModelAndView newPurchase() {
         cart.clear();
@@ -44,5 +48,10 @@ public class BookstoreController {
     @RequestMapping(value = "/showCart")
     public String showCart() {
         return "showCart";
+    }
+
+    @RequestMapping("/selectClient")
+    public ModelAndView selectClient() {
+        return new ModelAndView("selectClient", "allClients", clientRepository.findAll());
     }
 }

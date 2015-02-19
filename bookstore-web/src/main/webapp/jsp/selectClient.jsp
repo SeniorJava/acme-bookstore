@@ -18,15 +18,24 @@
 
 <div class="container">
     <p class="text-info">
-        <c:out value="Total order price: ${order.totalPrice}, books qty: ${order.lines.size()}"/>
+        <c:out value="Cart info: ${sessionScope['bookCart'].status}"/>
     </p>
+
     <h3>Select existing client:</h3>
-    <form:form commandName="order">
-        <form:select path="order.client">
-            <form:options items="${clients}" itemValue="id" itemLabel="lastName"/>
-        </form:select>
-    </form:form>
+
+    <form action="confirm" method="post">
+        <select name="clientID">
+            <c:forEach items="${allClients}" var="client">
+                <option value="${client.id}">
+                    <c:out value="${client.lastName}"/>&nbsp;<c:out value="${client.firstName}"/>
+                </option>
+            </c:forEach>
+        </select>
+    </form>
     <h3>or create new:</h3>
+    <form action="createAndConfirm">
+
+    </form>
 </div>
 
 </body>
