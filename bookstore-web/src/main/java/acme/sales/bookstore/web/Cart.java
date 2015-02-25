@@ -12,4 +12,5 @@ public interface Cart {
     void addLines(Map<String, String> lines);
     Iterable<BookOrderLine> getLines();
     String getStatus();
+    int getBooksQty();
 }

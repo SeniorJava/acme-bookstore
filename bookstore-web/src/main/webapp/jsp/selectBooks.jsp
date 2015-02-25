@@ -12,14 +12,35 @@
 
 <div class="page-header">
     <h1>Book catalogue</h1>
-    <small>Here you can select books for purchase</small><br/>
-    <a href="showCart">View cart</a>
+    <small>Here you can select books for purchase</small>
 </div>
 
 <div class="container">
-    <form action="addToCart" method="post">
+    <ul class="nav nav-pills navbar-right">
+        <li class="active">
+            <a href="showCart.action">
+                <span class="badge pull-right"><c:out value="${sessionScope['bookCart'].getBooksQty()}"/></span>
+                Your cart
+            </a>
+        </li>
+        <li>
+            <a href="showCart.action">User profile</a>
+        </li>
+    </ul>
+</div>
+
+<c:if test="${not empty message}">
+    <br/>
+    <div class="alert alert-info alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <c:out value="${message}"/>
+    </div>
+</c:if>
+
+<div class="container">
+    <form action="addToCart.action" method="post">
         <table class="table table-bordered table-striped">
-            <caption>All available books</caption>
+            <caption class="caption">All available books</caption>
             <thead>
             <th>#</th>
             <th>Title</th>
@@ -41,11 +62,8 @@
             </c:forEach>
             </tbody>
         </table>
-        <button type="submit">Add to cart</button>
+        <button type="submit" class="btn btn-primary btn-lg">Add to cart</button>
     </form>
 </div>
-
-<br/>
-
 </body>
 </html>

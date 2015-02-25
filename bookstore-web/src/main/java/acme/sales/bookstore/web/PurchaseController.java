@@ -17,7 +17,8 @@ import java.util.Map;
  */
 @Controller
 @Scope("request")
-public class BookstoreController {
+@RequestMapping("/purchase")
+public class PurchaseController {
 
     @Inject
     private Cart cart;
@@ -28,29 +29,31 @@ public class BookstoreController {
     @Inject
     private ClientRepository clientRepository;
 
-    @RequestMapping("/newPurchase")
+    @RequestMapping("/newPurchase.action")
     public ModelAndView newPurchase() {
         cart.clear();
         return selectBooks();
     }
 
-    @RequestMapping(value = "/selectBooks", method = RequestMethod.GET)
+    @RequestMapping(value = "/selectBooks.action", method = RequestMethod.GET)
     public ModelAndView selectBooks() {
         return new ModelAndView("selectBooks", "allBooks", bookRepository.findAll());
     }
 
-    @RequestMapping(value = "/addToCart", method = RequestMethod.POST)
+    @RequestMapping(value = "/addToCart.action", method = RequestMethod.POST)
     public ModelAndView addToCart(@RequestParam Map<String, String> lines) {
         cart.addLines(lines);
-        return selectBooks();
+        ModelAndView modelAndView = selectBooks();
+        modelAndView.addObject("message", "Books were successfully added");
+        return modelAndView;
     }
 
-    @RequestMapping(value = "/showCart")
+    @RequestMapping(value = "/showCart.action")
     public String showCart() {
         return "showCart";
     }
 
-    @RequestMapping("/selectClient")
+    @RequestMapping("/selectClient.action")
     public ModelAndView selectClient() {
         return new ModelAndView("selectClient", "allClients", clientRepository.findAll());
     }

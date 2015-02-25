@@ -73,11 +73,22 @@ public class CartImpl implements Cart {
     public String getStatus() {
         int qty = 0;
         double total = 0.0;
+
         for (BookOrderLine line : bookLines.values()) {
             qty += line.getQty();
             total += line.getQty() * line.getBook().getPrice();
         }
 
         return String.format("Books selected: %d, total price: %.2f", qty, total);
+    }
+
+    @Override
+    public int getBooksQty() {
+        int qty = 0;
+        for (BookOrderLine line : bookLines.values()) {
+            qty += line.getQty();
+        }
+
+        return qty;
     }
 }

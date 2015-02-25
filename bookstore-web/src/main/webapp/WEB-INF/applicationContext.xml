@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:sec="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <import resource="classpath:domain-context.xml"/>
+
+    <context:component-scan base-package="acme.sales.bookstore.web"/>
+
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!-- Security beans -->
+    <sec:user-service id="userDetailsService">
+        <sec:user name="jimi" password="hendrix" authorities="ROLE_CUSTOMER" />
+        <sec:user name="joe" password="perry" authorities="ROLE_MANAGER"/>
+    </sec:user-service>
+
+    <sec:authentication-manager alias="authMgr">
+        <sec:authentication-provider user-service-ref="userDetailsService"/>
+    </sec:authentication-manager>
+
+    <sec:http>
+        <sec:intercept-url pattern="/purchase/*.action" access="ROLE_CUSTOMER"/>
+        <sec:form-login login-page="/jsp/login.jsp" default-target-url="/purchase/selectBooks.action"
+                        authentication-failure-url="/jsp/login.jsp?error=true"
+                        always-use-default-target="false"/>
+        <sec:logout/>
+    </sec:http>
+</beans>
