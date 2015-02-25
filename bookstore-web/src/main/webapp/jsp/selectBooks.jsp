@@ -24,7 +24,7 @@
             </a>
         </li>
         <li>
-            <a href="showCart.action">User profile</a>
+            <a href="${pageContext.request.contextPath}/j_spring_security_logout">Logout</a>
         </li>
     </ul>
 </div>
