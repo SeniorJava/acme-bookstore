@@ -23,7 +23,7 @@
 </c:if>
 
 <div class="container">
-    <form action="/acmebookstore/j_spring_security_check" method="post" role="form">
+    <form action="${pageContext.request.contextPath}/j_spring_security_check" method="post" role="form">
         <legend>Enter your credentials:</legend>
         <fieldset>
             <div class="form-group">
