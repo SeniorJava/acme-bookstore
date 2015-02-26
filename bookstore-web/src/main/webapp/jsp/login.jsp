@@ -4,11 +4,11 @@
 <html lang="en">
 <head>
     <title>Login to ACME Bookstore</title>
-    <link type="text/css" href="../css/bootstrap.css" rel="stylesheet"/>
+    <link type="text/css" href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet"/>
 </head>
 <body>
-<script src="../js/jquery.js"></script>
-<script src="../js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 
 <div class="page-header">
     <h1>Welcome to ACME Bookstore</h1>
@@ -28,7 +28,7 @@
         <fieldset>
             <div class="form-group">
                 <label for="j_username">Username</label>
-                <input type="text" id="j_username" name="j_username" class="form-control"
+                <input type="text" id="j_username" name="j_username" class="form-control text"
                        placeholder="User name"/>
             </div>
             <div class="form-group">
@@ -37,8 +37,8 @@
                        placeholder="Password"/>
             </div>
         </fieldset>
-        <button type="submit">Login</button>
-        &nbsp;or&nbsp;Sign up
+        <button type="submit" class="btn btn-lg btn-primary">Login</button>
+        &nbsp;or&nbsp;<a href="${pageContext.request.contextPath}/signUp.action" class="btn btn-lg btn-warning">Sign up</a>
     </form>
 </div>
 </body>
