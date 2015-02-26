@@ -11,8 +11,8 @@
 <script src="../js/bootstrap.min.js"></script>
 
 <div class="page-header">
-    <h1>Book catalogue</h1>
-    <small>Here you can select books for purchase</small>
+    <h1>Book catalogue <small>Here you can select books for purchase.</small></h1>
+    <strong>Welcome, ${userInfo}!</strong>
 </div>
 
 <div class="container">

@@ -1,7 +1,7 @@
 package acme.sales.bookstore.web;
 
 import acme.sales.bookstore.domain.entities.Client;
-import acme.sales.bookstore.domain.repositories.ClientRepository;
+import acme.sales.bookstore.domain.services.AdministrationService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ import java.util.List;
 public class AdministrationController {
 
     @Inject
-    private ClientRepository clientRepository;
+    private AdministrationService administrationService;
 
     @RequestMapping("/signUp.action")
     public ModelAndView prepareNewClient() {
@@ -34,7 +34,7 @@ public class AdministrationController {
             return new ModelAndView("userProfile", "errors", errors);
         }
 
-        clientRepository.save(client);
+        administrationService.createNewClient(client);
         return new ModelAndView("login");
     }
 

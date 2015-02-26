@@ -22,13 +22,10 @@
     </bean>
 
     <!-- Security beans -->
-    <sec:user-service id="userDetailsService">
-        <sec:user name="jimi" password="hendrix" authorities="ROLE_CUSTOMER" />
-        <sec:user name="joe" password="perry" authorities="ROLE_MANAGER"/>
-    </sec:user-service>
-
     <sec:authentication-manager alias="authMgr">
-        <sec:authentication-provider user-service-ref="userDetailsService"/>
+        <sec:authentication-provider>
+            <sec:jdbc-user-service data-source-ref="dataSource"/>
+        </sec:authentication-provider>
     </sec:authentication-manager>
 
     <sec:http>

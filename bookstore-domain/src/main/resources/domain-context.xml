@@ -42,4 +42,5 @@
 
     <!-- Services -->
     <bean id="bookOrderService" class="acme.sales.bookstore.domain.services.BookOrderServiceImpl"/>
+    <bean id="administrationService" class="acme.sales.bookstore.domain.services.AdministrationServiceImpl"/>
 </beans>

@@ -11,8 +11,8 @@
 <script src="../js/bootstrap.min.js"></script>
 
 <div class="page-header">
-    <h1>Cart</h1>
-    <small>Here you can make your purchase final</small>
+    <h1>Book cart <small>Here you can make your purchase final.</small></h1>
+    <strong>Dear ${userInfo}!</strong> Please, proceed with your purchase.
 </div>
 
 <div class="container">
