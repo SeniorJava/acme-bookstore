@@ -46,6 +46,8 @@
     <!-- Services -->
     <bean id="bookOrderService" class="acme.sales.bookstore.domain.services.BookOrderServiceImpl"/>
     <bean id="administrationService" class="acme.sales.bookstore.domain.services.AdministrationServiceImpl"/>
+    <bean id="dashboardService" class="acme.sales.bookstore.domain.services.DashboardServiceImpl"/>
+    <bean id="securityService" class="acme.sales.bookstore.domain.services.SecurityServiceImpl"/>
 
     <!-- Aspects -->
     <bean id="verboseAspectBean" class="acme.sales.bookstore.domain.services.VerboseAdministrationActionsAspect"/>

@@ -2,8 +2,6 @@ package acme.sales.bookstore.domain.services;
 
 import acme.sales.bookstore.domain.entities.*;
 import acme.sales.bookstore.domain.repositories.BookOrderRepository;
-import acme.sales.bookstore.domain.repositories.ClientRepository;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
@@ -20,7 +18,7 @@ public class BookOrderServiceImpl implements BookOrderService {
     private BookOrderRepository orderRepository;
 
     @Inject
-    private ClientRepository clientRepository;
+    private SecurityService securityService;
 
     @Override
     public BookOrder prepareOrder(Client client) {
@@ -62,7 +60,7 @@ public class BookOrderServiceImpl implements BookOrderService {
             orderLine.setPrice(orderLine.getBook().getPrice());
         }
 
-        Client client = getCurrentUserClient();
+        Client client = securityService.getCurrentUserClient();
         bookOrder.setClient(client);
         bookOrder.setOrderDate(new Date());
         bookOrder.setStatus(Status.NEW);
@@ -70,13 +68,8 @@ public class BookOrderServiceImpl implements BookOrderService {
         orderRepository.save(bookOrder);
     }
 
-    private Client getCurrentUserClient() {
-        return clientRepository.findOneByFirstName(
-                    SecurityContextHolder.getContext().getAuthentication().getName());
-    }
-
     @Override
     public Collection<BookOrder> getCurrentUserOrders() {
-        return orderRepository.findByClient(getCurrentUserClient());
+        return orderRepository.findByClient(securityService.getCurrentUserClient());
     }
 }

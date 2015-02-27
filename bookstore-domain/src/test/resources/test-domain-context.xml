@@ -6,4 +6,5 @@
 
        <import resource="classpath:domain-context.xml"/>
 
+    <bean id="securityService" class="acme.sales.bookstore.domain.test.SecurityServiceMockImpl"/>
 </beans>
