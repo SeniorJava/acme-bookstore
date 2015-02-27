@@ -6,5 +6,6 @@ import acme.sales.bookstore.domain.entities.Client;
  * @author vmuravlev
  */
 public interface AdministrationService {
-    void createNewClient(Client client);
+    void createNewClient(Client client) throws AdministrationException;
+    boolean hasDuplicate(Client client);
 }

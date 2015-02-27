@@ -1,6 +1,7 @@
 package acme.sales.bookstore.web;
 
 import acme.sales.bookstore.domain.entities.Client;
+import acme.sales.bookstore.domain.services.AdministrationException;
 import acme.sales.bookstore.domain.services.AdministrationService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -34,8 +35,12 @@ public class AdministrationController {
             return new ModelAndView("userProfile", "errors", errors);
         }
 
-        administrationService.createNewClient(client);
-        return new ModelAndView("login");
+        try {
+            administrationService.createNewClient(client);
+            return new ModelAndView("login");
+        } catch (AdministrationException e) {
+            return new ModelAndView("userProfile", "errors", e.getMessage());
+        }
     }
 
     private List<String> validate(Client client) {

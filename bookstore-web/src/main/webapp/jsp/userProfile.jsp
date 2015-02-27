@@ -19,6 +19,12 @@
     <small>Edit client details</small>
 </div>
 
+<c:if test="${not empty errors}">
+    <div class="alert alert-danger">
+        <c:out value="${errors}"/>
+    </div>
+</c:if>
+
 <div class="container">
     <form:form commandName="client" action="createNewClient.action" cssClass="form-horizontal">
         <legend>Client details</legend>

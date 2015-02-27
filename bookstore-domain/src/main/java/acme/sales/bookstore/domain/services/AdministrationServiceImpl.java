@@ -21,10 +21,20 @@ public class AdministrationServiceImpl implements AdministrationService {
 
     @Override
     @Transactional
-    public void createNewClient(Client client) {
+    public void createNewClient(Client client) throws AdministrationException {
+
+        if (hasDuplicate(client)) {
+            throw new AdministrationException(String.format("Duplicate user %s", client.getFirstName()));
+        }
+
         clientRepository.save(client);
         User newUser = new User(client);
         newUser.getAuthorities().add("ROLE_CUSTOMER");
         userRepository.save(newUser);
+    }
+
+    @Override
+    public boolean hasDuplicate(Client client) {
+        return clientRepository.findOneByFirstName(client.getFirstName()) != null;
     }
 }
