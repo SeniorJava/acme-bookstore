@@ -3,6 +3,7 @@ package acme.sales.bookstore.web;
 import acme.sales.bookstore.domain.entities.Client;
 import acme.sales.bookstore.domain.services.AdministrationException;
 import acme.sales.bookstore.domain.services.AdministrationService;
+import acme.sales.bookstore.domain.services.DashboardService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +23,9 @@ public class AdministrationController {
 
     @Inject
     private AdministrationService administrationService;
+
+    @Inject
+    private DashboardService dashboardService;
 
     @RequestMapping("/signUp.action")
     public ModelAndView prepareNewClient() {
@@ -41,6 +46,12 @@ public class AdministrationController {
         } catch (AdministrationException e) {
             return new ModelAndView("userProfile", "errors", e.getMessage());
         }
+    }
+
+    @RequestMapping("/showDashboard.action")
+    public ModelAndView showDashboard(Date date) {
+        Date statsDate = date == null ? new Date() : date;
+        return new ModelAndView("dashboard", "stats", dashboardService.getStats(statsDate));
     }
 
     private List<String> validate(Client client) {

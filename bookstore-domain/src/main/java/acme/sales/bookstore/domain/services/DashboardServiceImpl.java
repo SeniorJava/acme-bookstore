@@ -4,20 +4,24 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author vmuravlev
  */
 public class DashboardServiceImpl implements DashboardService {
 
+    private static final DashboardStatsRowMapper DASHBOARD_STATS_ROW_MAPPER = new DashboardStatsRowMapper();
     private JdbcTemplate jdbcTemplate;
 
     @Inject
@@ -60,6 +64,27 @@ public class DashboardServiceImpl implements DashboardService {
         } else {
             jdbcTemplate.execute("INSERT INTO dashboard_stats(orders_qty, total_sum, stat_date) VALUES (?,?,?)",
                     setParamsCallback);
+        }
+    }
+
+    @Override
+    public DashboardStats getStats(Date date) {
+        List<DashboardStats> statsList = jdbcTemplate.query(
+                "select * from dashboard_stats where stats_date=?",
+                DASHBOARD_STATS_ROW_MAPPER, date);
+
+        return statsList.isEmpty() ? null : statsList.get(0);
+    }
+
+    private static class DashboardStatsRowMapper implements RowMapper<DashboardStats> {
+        @Override
+        public DashboardStats mapRow(ResultSet rs, int rowNum) throws SQLException {
+            DashboardStats stats = new DashboardStats();
+            stats.setOrdersQty(rs.getInt("orders_qty"));
+            stats.setTotalSum(rs.getDouble("total_sum"));
+            stats.setStatsDate(rs.getDate("stats_date"));
+
+            return stats;
         }
     }
 }
