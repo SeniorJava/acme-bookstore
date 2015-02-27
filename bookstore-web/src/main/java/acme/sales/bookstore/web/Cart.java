@@ -2,6 +2,7 @@ package acme.sales.bookstore.web;
 
 import acme.sales.bookstore.domain.entities.BookOrderLine;
 
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Map;
 public interface Cart {
     void clear();
     void addLines(Map<String, String> lines);
-    Iterable<BookOrderLine> getLines();
+    Collection<BookOrderLine> getLines();
     String getStatus();
     int getBooksQty();
 }

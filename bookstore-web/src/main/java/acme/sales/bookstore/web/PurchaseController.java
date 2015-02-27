@@ -3,6 +3,7 @@ package acme.sales.bookstore.web;
 import acme.sales.bookstore.domain.entities.Client;
 import acme.sales.bookstore.domain.repositories.BookRepository;
 import acme.sales.bookstore.domain.repositories.ClientRepository;
+import acme.sales.bookstore.domain.services.BookOrderService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,8 +32,11 @@ public class PurchaseController {
     @Inject
     private ClientRepository clientRepository;
 
+    @Inject
+    private BookOrderService orderService;
+
     @RequestMapping("/newPurchase.action")
-    public ModelAndView newPurchase(Principal principal) {
+    public ModelAndView clearCart(Principal principal) {
         cart.clear();
         return selectBooks(principal);
     }
@@ -65,8 +69,19 @@ public class PurchaseController {
         return modelAndView;
     }
 
-    @RequestMapping("/selectClient.action")
-    public ModelAndView selectClient() {
-        return new ModelAndView("selectClient", "allClients", clientRepository.findAll());
+    @RequestMapping("/makePurchase.action")
+    public ModelAndView makePurchase() {
+        orderService.createOrder(cart.getLines());
+        return showOrders();
+    }
+
+    @RequestMapping("/showOrders.action")
+    public ModelAndView showOrders() {
+        return new ModelAndView("purchaseList", "orders", orderService.getCurrentUserOrders());
+    }
+
+    @RequestMapping("/showOrder.action")
+    public ModelAndView showOrder() {
+        return new ModelAndView("purchaseDetails", "allClients", clientRepository.findAll());
     }
 }

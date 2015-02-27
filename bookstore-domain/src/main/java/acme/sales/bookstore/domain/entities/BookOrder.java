@@ -29,7 +29,7 @@ public class BookOrder {
     @Basic
     private String comments;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Collection<BookOrderLine> lines;
 
     public BookOrder() {
@@ -88,9 +88,19 @@ public class BookOrder {
     public double getTotalPrice() {
         double total = 0.0;
         for (BookOrderLine line : lines) {
-            total += line.getPrice() * line.getQty();
+            total += line.getBook().getPrice() * line.getQty();
         }
 
         return total;
+    }
+
+    @Transient
+    public int getBooksQty() {
+        int qty = 0;
+        for (BookOrderLine line : lines) {
+            qty += line.getQty();
+        }
+
+        return qty;
     }
 }

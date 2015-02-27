@@ -21,21 +21,10 @@
         <c:out value="Cart info: ${sessionScope['bookCart'].status}"/>
     </p>
 
-    <h3>Select existing client:</h3>
+    <p class="text-info">
 
-    <form action="confirm" method="post">
-        <select name="clientID">
-            <c:forEach items="${allClients}" var="client">
-                <option value="${client.id}">
-                    <c:out value="${client.lastName}"/>&nbsp;<c:out value="${client.firstName}"/>
-                </option>
-            </c:forEach>
-        </select>
-    </form>
-    <h3>or create new:</h3>
-    <form action="createAndConfirm">
+    </p>
 
-    </form>
 </div>
 
 </body>

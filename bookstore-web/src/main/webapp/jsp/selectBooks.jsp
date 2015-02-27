@@ -24,6 +24,9 @@
             </a>
         </li>
         <li>
+            <a href="showOrders.action">Orders</a>
+        </li>
+        <li>
             <a href="${pageContext.request.contextPath}/j_spring_security_logout">Logout</a>
         </li>
     </ul>

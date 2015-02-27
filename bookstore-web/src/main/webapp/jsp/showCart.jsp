@@ -44,8 +44,8 @@
     </table>
     <ul class="nav nav-pills right">
         <c:if test="${not sessionScope['bookCart'].lines.isEmpty()}">
-            <li class="active"><a href="selectClient.action">Make purchase</a></li>
-            <li><a href="newPurchase.action">Clear cart</a></li>
+            <li class="active"><a href="makePurchase.action">Make purchase</a></li>
+            <li><a href="clearCart.action">Clear cart</a></li>
         </c:if>
         <li><a href="selectBooks.action">Add more books</a></li>
     </ul>
