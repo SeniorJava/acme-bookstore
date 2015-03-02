@@ -7,18 +7,21 @@
 
     <description>Web client for ACME Bookstore</description>
 
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath*:domain-context.xml
+            /WEB-INF/spring-web-security.xml
+        </param-value>
+    </context-param>
+
     <servlet>
-        <servlet-name>springDispatcher</servlet-name>
+        <servlet-name>spring-mvc</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <init-param>
-            <param-name>contextConfigLocation</param-name>
-            <param-value>WEB-INF/applicationContext.xml</param-value>
-        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>springDispatcher</servlet-name>
+        <servlet-name>spring-mvc</servlet-name>
         <url-pattern>*.action</url-pattern>
     </servlet-mapping>
 
