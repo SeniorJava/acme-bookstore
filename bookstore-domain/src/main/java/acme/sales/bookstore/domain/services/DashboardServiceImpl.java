@@ -70,7 +70,7 @@ public class DashboardServiceImpl implements DashboardService {
     @Override
     public DashboardStats getStats(Date date) {
         List<DashboardStats> statsList = jdbcTemplate.query(
-                "select * from dashboard_stats where stats_date=?",
+                "select * from dashboard_stats where stat_date=?",
                 DASHBOARD_STATS_ROW_MAPPER, date);
 
         return statsList.isEmpty() ? null : statsList.get(0);
@@ -82,7 +82,7 @@ public class DashboardServiceImpl implements DashboardService {
             DashboardStats stats = new DashboardStats();
             stats.setOrdersQty(rs.getInt("orders_qty"));
             stats.setTotalSum(rs.getDouble("total_sum"));
-            stats.setStatsDate(rs.getDate("stats_date"));
+            stats.setStatsDate(rs.getDate("stat_date"));
 
             return stats;
         }

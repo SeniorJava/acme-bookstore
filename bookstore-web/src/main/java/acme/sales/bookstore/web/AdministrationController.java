@@ -48,7 +48,7 @@ public class AdministrationController {
         }
     }
 
-    @RequestMapping("/showDashboard.action")
+    @RequestMapping("/manager/showDashboard.action")
     public ModelAndView showDashboard(Date date) {
         Date statsDate = date == null ? new Date() : date;
         return new ModelAndView("dashboard", "stats", dashboardService.getStats(statsDate));
