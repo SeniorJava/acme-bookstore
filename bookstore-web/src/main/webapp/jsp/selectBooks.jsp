@@ -4,11 +4,11 @@
 <html lang="en">
 <head>
     <title>Book catalogue</title>
-    <link type="text/css" href="../css/bootstrap.css" rel="stylesheet"/>
+    <link type="text/css" href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet"/>
 </head>
 <body>
-<script src="../js/jquery.js"></script>
-<script src="../js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 
 <div class="page-header">
     <h1>Book catalogue <small>Here you can select books for purchase.</small></h1>

@@ -13,7 +13,7 @@
     <!-- Security beans -->
     <sec:http pattern="/purchase/*.action">
         <sec:intercept-url pattern="/purchase/*.action" access="ROLE_CUSTOMER"/>
-        <sec:form-login login-page="/jsp/login.jsp" default-target-url="/purchase/selectBooks.action"
+        <sec:form-login login-page="/jsp/login.jsp" default-target-url="/onLogon.action"
                         authentication-failure-url="/jsp/login.jsp?error=true"
                         always-use-default-target="false"/>
         <sec:logout/>
@@ -21,7 +21,7 @@
 
     <sec:http>
         <sec:intercept-url pattern="/manager/*.action" access="ROLE_MANAGER"/>
-        <sec:form-login login-page="/jsp/login.jsp" default-target-url="/manager/showDashboard.action"
+        <sec:form-login login-page="/jsp/login.jsp" default-target-url="/onLogon.action"
                         authentication-failure-url="/jsp/login.jsp?error=true"
                         always-use-default-target="true"/>
         <sec:logout/>

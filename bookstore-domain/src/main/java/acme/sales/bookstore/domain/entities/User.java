@@ -54,7 +54,7 @@ public class User {
         this.enabled = enabled;
     }
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "authorities", schema = "acme_bookstore",
             joinColumns = {@JoinColumn(name = "username", referencedColumnName = "username")})
     @Column(name = "authority")

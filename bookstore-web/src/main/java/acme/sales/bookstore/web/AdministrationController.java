@@ -1,6 +1,8 @@
 package acme.sales.bookstore.web;
 
 import acme.sales.bookstore.domain.entities.Client;
+import acme.sales.bookstore.domain.entities.User;
+import acme.sales.bookstore.domain.repositories.UserRepository;
 import acme.sales.bookstore.domain.services.AdministrationException;
 import acme.sales.bookstore.domain.services.AdministrationService;
 import acme.sales.bookstore.domain.services.DashboardService;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +29,12 @@ public class AdministrationController {
 
     @Inject
     private DashboardService dashboardService;
+
+    @Inject
+    private UserRepository userRepository;
+
+    @Inject
+    private PurchaseController purchaseController;
 
     @RequestMapping("/signUp.action")
     public ModelAndView prepareNewClient() {
@@ -45,6 +54,16 @@ public class AdministrationController {
             return new ModelAndView("login");
         } catch (AdministrationException e) {
             return new ModelAndView("userProfile", "errors", e.getMessage());
+        }
+    }
+
+    @RequestMapping("/onLogon.action")
+    public ModelAndView onLogon(Principal principal) {
+        User user = userRepository.findByUsername(principal.getName());
+        if (user.getAuthorities().contains("ROLE_MANAGER")) {
+            return showDashboard(new Date());
+        } else {
+            return purchaseController.selectBooks(principal);
         }
     }
 
