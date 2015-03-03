@@ -49,14 +49,23 @@ public class CartImpl implements Cart {
                 continue;
             }
 
-            if (bookLines.containsKey(bookID)) {
-                BookOrderLine line = bookLines.get(bookID);
-                line.setQty(line.getQty() + qty);
-            } else {
-                Book book = bookRepository.findOne(bookID);
-                this.bookLines.put(bookID, new BookOrderLine(book, qty));
-            }
+            addBook(bookID, qty);
         }
+    }
+
+    private void addBook(int bookID, int qty) {
+        if (bookLines.containsKey(bookID)) {
+            BookOrderLine line = bookLines.get(bookID);
+            line.setQty(line.getQty() + qty);
+        } else {
+            Book book = bookRepository.findOne(bookID);
+            this.bookLines.put(bookID, new BookOrderLine(book, qty));
+        }
+    }
+
+    @Override
+    public void addBook(int id) {
+        addBook(id, 1);
     }
 
     @Override

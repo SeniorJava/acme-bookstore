@@ -11,6 +11,7 @@ import java.util.Map;
 public interface Cart {
     void clear();
     void addLines(Map<String, String> lines);
+    void addBook(int id);
     Collection<BookOrderLine> getLines();
     String getStatus();
     int getBooksQty();

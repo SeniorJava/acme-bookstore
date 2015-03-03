@@ -62,6 +62,14 @@ public class PurchaseController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/addBookToCart.action", method = RequestMethod.GET)
+    public ModelAndView addToCart(int id, Principal principal) {
+        cart.addBook(id);
+        ModelAndView modelAndView = selectBooks(principal);
+        modelAndView.addObject("message", "Book were successfully added");
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/showCart.action")
     public ModelAndView showCart(Principal principal) {
         ModelAndView modelAndView = new ModelAndView("showCart");

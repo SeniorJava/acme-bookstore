@@ -50,7 +50,7 @@
             <th>Author</th>
             <th>Genre</th>
             <th>Price</th>
-            <th width="1%">Qty</th>
+            <th width="1%"/>
             </thead>
             <tbody>
             <c:forEach items="${allBooks}" var="book" varStatus="bookStatus">
@@ -60,7 +60,7 @@
                     <td><c:out value="${book.author}"/></td>
                     <td><c:out value="${book.genre}"/></td>
                     <td align="right"><c:out value="${book.price}"/></td>
-                    <td><input type="number" name="${book.id}" value="1" class="text-right"/></td>
+                    <td><a href="${pageContext.request.contextPath}/purchase/addBookToCart.action?id=${book.id}" class="btn btn-success">Add to cart</a></td>
                 </tr>
             </c:forEach>
             </tbody>
