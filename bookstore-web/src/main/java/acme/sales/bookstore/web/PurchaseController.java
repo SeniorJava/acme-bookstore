@@ -1,9 +1,11 @@
 package acme.sales.bookstore.web;
 
+import acme.sales.bookstore.domain.entities.Book;
 import acme.sales.bookstore.domain.entities.Client;
 import acme.sales.bookstore.domain.repositories.BookRepository;
 import acme.sales.bookstore.domain.repositories.ClientRepository;
 import acme.sales.bookstore.domain.services.BookOrderService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,8 +45,24 @@ public class PurchaseController {
 
     @RequestMapping(value = "/selectBooks.action", method = RequestMethod.GET)
     public ModelAndView selectBooks(Principal principal) {
-        ModelAndView modelAndView = new ModelAndView("selectBooks", "allBooks", bookRepository.findAll());
+        return selectBooksByGenre(StringUtils.EMPTY, principal);
+    }
+
+    @RequestMapping(value = "/selectBooksByGenre.action", method = RequestMethod.GET)
+    public ModelAndView selectBooksByGenre(@RequestParam(required = true) String genre,
+                                    Principal principal) {
+        Iterable<Book> books;
+        ModelAndView modelAndView = new ModelAndView("selectBooks");
+        if (StringUtils.isEmpty(genre)) {
+            books = bookRepository.findAll();
+        } else {
+            books = bookRepository.findByGenre(genre);
+            modelAndView.addObject("selectedGenre", genre);
+        }
+
+        modelAndView.addObject("allBooks", books);
         addUserInfo(modelAndView, principal);
+        modelAndView.addObject("genres", bookRepository.findAllGenres());
         return modelAndView;
     }
 
