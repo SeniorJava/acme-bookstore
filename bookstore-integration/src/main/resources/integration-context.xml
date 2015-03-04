@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:batch="http://www.springframework.org/schema/batch"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/batch
+       http://www.springframework.org/schema/batch/spring-batch-2.2.xsd">
+
+    <import resource="classpath:domain-context.xml"/>
+
+    <batch:job-repository id="jobRepository"
+                          data-source="dataSource" transaction-manager="txManager"
+                          isolation-level-for-create="REPEATABLE_READ"/>
+
+    <batch:job id="importBooksJob" job-repository="jobRepository" restartable="true">
+        <batch:step id="loadBooksFromFileStep" allow-start-if-complete="true">
+            <batch:tasklet transaction-manager="txManager">
+                <batch:chunk reader="bookItemReader" writer="bookItemWriter" commit-interval="10" />
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
+
+    <bean id="jobLauncher"
+          class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="jobRepository" ref="jobRepository" />
+    </bean>
+
+    <bean id="bookItemReader" class="acme.sales.bookstore.integration.BookItemReader">
+        <property name="resource" value="BookPrice.csv"/>
+    </bean>
+
+    <bean id="bookItemWriter" class="acme.sales.bookstore.integration.BookItemWriter">
+        <property name="bookRepository" ref="bookRepository"/>
+    </bean>
+</beans>
