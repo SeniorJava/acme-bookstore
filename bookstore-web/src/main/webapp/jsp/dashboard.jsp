@@ -36,7 +36,9 @@
     </div>
 
     <ul class="nav nav-pills right">
-        <li class="active"><a href="showDashboard.action">Refresh</a></li>
+        <li class="active"><a href="${pageContext.request.contextPath}/manager/showDashboard.action">Refresh</a></li>
+        <li><a href="${pageContext.request.contextPath}/manager/showAllBooks.action">Book list</a></li>
+        <li><a href="${pageContext.request.contextPath}/manager/showAllOrders.action">Order list</a></li>
         <li>
             <a href="${pageContext.request.contextPath}/j_spring_security_logout">Logout</a>
         </li>

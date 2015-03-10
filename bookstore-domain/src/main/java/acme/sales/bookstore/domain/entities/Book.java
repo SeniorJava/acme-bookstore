@@ -24,6 +24,9 @@ public class Book {
     @Basic
     private Double price;
 
+    @Basic
+    private String ISBN;
+
     public int getId() {
         return id;
     }
@@ -62,5 +65,13 @@ public class Book {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public String getISBN() {
+        return ISBN;
+    }
+
+    public void setISBN(String ISBN) {
+        this.ISBN = ISBN;
     }
 }

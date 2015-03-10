@@ -2,6 +2,8 @@ package acme.sales.bookstore.web;
 
 import acme.sales.bookstore.domain.entities.Client;
 import acme.sales.bookstore.domain.entities.User;
+import acme.sales.bookstore.domain.repositories.BookOrderRepository;
+import acme.sales.bookstore.domain.repositories.BookRepository;
 import acme.sales.bookstore.domain.repositories.UserRepository;
 import acme.sales.bookstore.domain.services.AdministrationException;
 import acme.sales.bookstore.domain.services.AdministrationService;
@@ -35,6 +37,12 @@ public class AdministrationController {
 
     @Inject
     private PurchaseController purchaseController;
+
+    @Inject
+    private BookRepository bookRepository;
+
+    @Inject
+    private BookOrderRepository orderRepository;
 
     @RequestMapping("/signUp.action")
     public ModelAndView prepareNewClient() {
@@ -71,6 +79,16 @@ public class AdministrationController {
     public ModelAndView showDashboard(Date date) {
         Date statsDate = date == null ? new Date() : date;
         return new ModelAndView("dashboard", "stats", dashboardService.getStats(statsDate));
+    }
+
+    @RequestMapping("/manager/showAllBooks.action")
+    public ModelAndView showBookList() {
+        return new ModelAndView("bookList", "allBooks", bookRepository.findAll());
+    }
+
+    @RequestMapping("/manager/showAllOrders.action")
+    public ModelAndView showOrderList() {
+        return new ModelAndView("orderList", "orders", orderRepository.findAll());
     }
 
     private List<String> validate(Client client) {
