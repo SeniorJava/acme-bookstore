@@ -17,6 +17,13 @@
 </div>
 
 <div class="container">
+    <ul class="nav nav-pills right">
+        <li><a href="${pageContext.request.contextPath}/manager/showAllBooks.action">Book list</a></li>
+        <li><a href="${pageContext.request.contextPath}/manager/showAllOrders.action">Order list</a></li>
+        <li>
+            <a href="${pageContext.request.contextPath}/j_spring_security_logout">Logout</a>
+        </li>
+    </ul>
 
     <div class="panel panel-primary">
         <div class="panel-heading">Total performance index</div>
@@ -32,17 +39,9 @@
                     <td><c:out value="${stats.totalSum}"/></td>
                 </tr>
             </table>
+            <a class="btn btn-lg btn-primary" href="${pageContext.request.contextPath}/manager/showDashboard.action">Refresh</a>
         </div>
     </div>
-
-    <ul class="nav nav-pills right">
-        <li class="active"><a href="${pageContext.request.contextPath}/manager/showDashboard.action">Refresh</a></li>
-        <li><a href="${pageContext.request.contextPath}/manager/showAllBooks.action">Book list</a></li>
-        <li><a href="${pageContext.request.contextPath}/manager/showAllOrders.action">Order list</a></li>
-        <li>
-            <a href="${pageContext.request.contextPath}/j_spring_security_logout">Logout</a>
-        </li>
-    </ul>
 </div>
 </body>
 </html>

@@ -4,6 +4,7 @@ import acme.sales.bookstore.domain.entities.Client;
 import acme.sales.bookstore.domain.entities.User;
 import acme.sales.bookstore.domain.repositories.ClientRepository;
 import acme.sales.bookstore.domain.repositories.UserRepository;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
@@ -11,6 +12,7 @@ import javax.inject.Inject;
 /**
  * @author vmuravlev
  */
+@Component("administrationService")
 public class AdministrationServiceImpl implements AdministrationService {
 
     @Inject

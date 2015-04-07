@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:task="http://www.springframework.org/schema/task"
        xmlns:sec="http://www.springframework.org/schema/security"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/task
-       http://www.springframework.org/schema/task/spring-task.xsd
        http://www.springframework.org/schema/security
        http://www.springframework.org/schema/security/spring-security.xsd">
 
@@ -26,11 +23,4 @@
                         always-use-default-target="true"/>
         <sec:logout/>
     </sec:http>
-
-    <!-- Timer beans -->
-    <task:scheduler id="taskScheduler" pool-size="5"/>
-    <task:scheduled-tasks scheduler="taskScheduler">
-        <task:scheduled ref="dashboardService"
-                        method="collectStats" fixed-delay="30000" initial-delay="10000"/>
-    </task:scheduled-tasks>
 </beans>

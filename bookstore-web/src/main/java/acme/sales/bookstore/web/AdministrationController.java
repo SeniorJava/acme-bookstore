@@ -71,7 +71,7 @@ public class AdministrationController {
         if (user.getAuthorities().contains("ROLE_MANAGER")) {
             return showDashboard(new Date());
         } else {
-            return purchaseController.selectBooks(principal);
+            return purchaseController.selectBooks();
         }
     }
 

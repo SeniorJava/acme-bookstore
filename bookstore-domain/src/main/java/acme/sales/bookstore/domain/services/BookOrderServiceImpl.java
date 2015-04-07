@@ -2,6 +2,7 @@ package acme.sales.bookstore.domain.services;
 
 import acme.sales.bookstore.domain.entities.*;
 import acme.sales.bookstore.domain.repositories.BookOrderRepository;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
@@ -12,6 +13,7 @@ import java.util.Date;
 /**
  * @author vmuravlev
  */
+@Component("bookOrderService")
 public class BookOrderServiceImpl implements BookOrderService {
 
     @Inject

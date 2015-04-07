@@ -3,7 +3,7 @@ package acme.sales.bookstore.domain.test;
 import acme.sales.bookstore.domain.entities.Client;
 import acme.sales.bookstore.domain.services.AdministrationException;
 import acme.sales.bookstore.domain.services.AdministrationService;
-import acme.sales.bookstore.domain.services.VerboseAdministrationActionsAspect;
+import acme.sales.bookstore.domain.services.ProfilingAspect;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -17,10 +17,10 @@ import javax.inject.Inject;
  */
 @ContextConfiguration(locations = "/test-domain-context.xml")
 @TransactionConfiguration(defaultRollback = true)
-public class VerboseActionsTest extends AbstractTransactionalTestNGSpringContextTests {
+public class ProfilingActionsTest extends AbstractTransactionalTestNGSpringContextTests {
 
     @Inject
-    private VerboseAdministrationActionsAspect aspect;
+    private ProfilingAspect aspect;
 
     @Inject
     private AdministrationService administrationService;

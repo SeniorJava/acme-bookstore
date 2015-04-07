@@ -1,23 +1,27 @@
 package acme.sales.bookstore.domain.services;
 
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StopWatch;
 
 /**
  * @author vmuravlev
  */
-public class VerboseAdministrationActionsAspect {
+public class ProfilingAspect {
 
     private int callCount;
 
-    public Object verboseAdministrationAction(ProceedingJoinPoint joinPoint) throws Throwable {
+    private Logger logger = LoggerFactory.getLogger("ProfilingAspect");
+
+    public Object profilingAction(ProceedingJoinPoint joinPoint) throws Throwable {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
         Object result = joinPoint.proceed();
 
         stopWatch.stop();
-        System.out.printf("%s elapsed (ms): %d\n",
+        logger.info("{} elapsed (ms): {}",
                 joinPoint.getSignature().getName(), stopWatch.getTotalTimeMillis());
 
         callCount++;

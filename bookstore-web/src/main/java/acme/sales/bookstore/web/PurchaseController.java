@@ -3,8 +3,8 @@ package acme.sales.bookstore.web;
 import acme.sales.bookstore.domain.entities.Book;
 import acme.sales.bookstore.domain.entities.Client;
 import acme.sales.bookstore.domain.repositories.BookRepository;
-import acme.sales.bookstore.domain.repositories.ClientRepository;
 import acme.sales.bookstore.domain.services.BookOrderService;
+import acme.sales.bookstore.domain.services.SecurityService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
-import java.security.Principal;
 import java.util.Map;
 
 /**
@@ -32,25 +31,24 @@ public class PurchaseController {
     private BookRepository bookRepository;
 
     @Inject
-    private ClientRepository clientRepository;
+    private SecurityService securityService;
 
     @Inject
     private BookOrderService orderService;
 
     @RequestMapping("/newPurchase.action")
-    public ModelAndView clearCart(Principal principal) {
+    public ModelAndView clearCart() {
         cart.clear();
-        return selectBooks(principal);
+        return selectBooks();
     }
 
     @RequestMapping(value = "/selectBooks.action", method = RequestMethod.GET)
-    public ModelAndView selectBooks(Principal principal) {
-        return selectBooksByGenre(StringUtils.EMPTY, principal);
+    public ModelAndView selectBooks() {
+        return selectBooksByGenre(StringUtils.EMPTY);
     }
 
     @RequestMapping(value = "/selectBooksByGenre.action", method = RequestMethod.GET)
-    public ModelAndView selectBooksByGenre(@RequestParam(required = true) String genre,
-                                    Principal principal) {
+    public ModelAndView selectBooksByGenre(@RequestParam(required = true) String genre) {
         Iterable<Book> books;
         ModelAndView modelAndView = new ModelAndView("selectBooks");
         if (StringUtils.isEmpty(genre)) {
@@ -61,37 +59,37 @@ public class PurchaseController {
         }
 
         modelAndView.addObject("allBooks", books);
-        addUserInfo(modelAndView, principal);
+        addUserInfo(modelAndView);
         modelAndView.addObject("genres", bookRepository.findAllGenres());
         return modelAndView;
     }
 
-    private void addUserInfo(ModelAndView modelAndView, Principal principal) {
-        Client loggedClient = clientRepository.findOneByFirstName(principal.getName());
+    private void addUserInfo(ModelAndView modelAndView) {
+        Client loggedClient = securityService.getCurrentUserClient();
         modelAndView.addObject("userInfo", String.format("%s %s",
                 loggedClient.getFirstName(), loggedClient.getLastName()));
     }
 
     @RequestMapping(value = "/addToCart.action", method = RequestMethod.POST)
-    public ModelAndView addToCart(@RequestParam Map<String, String> lines, Principal principal) {
+    public ModelAndView addToCart(@RequestParam Map<String, String> lines) {
         cart.addLines(lines);
-        ModelAndView modelAndView = selectBooks(principal);
+        ModelAndView modelAndView = selectBooks();
         modelAndView.addObject("message", "Books were successfully added");
         return modelAndView;
     }
 
     @RequestMapping(value = "/addBookToCart.action", method = RequestMethod.GET)
-    public ModelAndView addToCart(int id, Principal principal) {
+    public ModelAndView addToCart(int id) {
         cart.addBook(id);
-        ModelAndView modelAndView = selectBooks(principal);
+        ModelAndView modelAndView = selectBooks();
         modelAndView.addObject("message", "Book were successfully added");
         return modelAndView;
     }
 
     @RequestMapping(value = "/showCart.action")
-    public ModelAndView showCart(Principal principal) {
+    public ModelAndView showCart() {
         ModelAndView modelAndView = new ModelAndView("showCart");
-        addUserInfo(modelAndView, principal);
+        addUserInfo(modelAndView);
         return modelAndView;
     }
 
@@ -104,10 +102,5 @@ public class PurchaseController {
     @RequestMapping("/showOrders.action")
     public ModelAndView showOrders() {
         return new ModelAndView("purchaseList", "orders", orderService.getCurrentUserOrders());
-    }
-
-    @RequestMapping("/showOrder.action")
-    public ModelAndView showOrder() {
-        return new ModelAndView("purchaseDetails", "allClients", clientRepository.findAll());
     }
 }

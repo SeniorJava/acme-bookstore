@@ -4,14 +4,17 @@
        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:sec="http://www.springframework.org/schema/security"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:bean="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/data/jpa
        http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
        http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/security
-       http://www.springframework.org/schema/security/spring-security.xsd">
+       http://www.springframework.org/schema/security/spring-security.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!-- PostgreSQL DataSource -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
@@ -46,22 +49,23 @@
         <property name="entityManagerFactory" ref="bookstoreEMF"/>
     </bean>
 
+    <tx:annotation-driven transaction-manager="txManager" />
+
+    <bean:component-scan base-package="acme.sales.bookstore.domain.services"/>
+
     <!-- Services -->
-    <bean id="bookOrderService" class="acme.sales.bookstore.domain.services.BookOrderServiceImpl"/>
-    <bean id="administrationService" class="acme.sales.bookstore.domain.services.AdministrationServiceImpl"/>
     <bean id="dashboardService" class="acme.sales.bookstore.domain.services.DashboardServiceImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
-    <bean id="securityService" class="acme.sales.bookstore.domain.services.SecurityServiceImpl"/>
 
     <!-- Aspects -->
-    <bean id="verboseAspectBean" class="acme.sales.bookstore.domain.services.VerboseAdministrationActionsAspect"/>
+    <bean id="profilingAspectBean" class="acme.sales.bookstore.domain.services.ProfilingAspect"/>
 
     <aop:config>
-        <aop:aspect id="verboseAspect" ref="verboseAspectBean">
-            <aop:pointcut id="verbosePointcut"
-                          expression="target(acme.sales.bookstore.domain.services.AdministrationService)"/>
-            <aop:around method="verboseAdministrationAction" pointcut-ref="verbosePointcut"/>
+        <aop:aspect id="profilingAspect" ref="profilingAspectBean">
+            <aop:pointcut id="dashboardPointcut"
+                          expression="target(acme.sales.bookstore.domain.services.DashboardService)"/>
+            <aop:around method="profilingAction" pointcut-ref="dashboardPointcut"/>
         </aop:aspect>
     </aop:config>
 
