@@ -5,16 +5,16 @@ import acme.sales.bookstore.domain.entities.BookOrderLine;
 import acme.sales.bookstore.domain.repositories.BookRepository;
 import acme.sales.bookstore.domain.services.BookOrderService;
 import acme.sales.bookstore.domain.services.DashboardService;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import javax.inject.Inject;
-import javax.sql.DataSource;
 import java.util.Arrays;
+import java.util.Date;
+
+import static org.testng.Assert.assertEquals;
 
 /**
  * @author vmuravlev
@@ -32,15 +32,10 @@ public class DashboardServiceTest extends AbstractTransactionalTestNGSpringConte
     @Inject
     private BookRepository bookRepository;
 
-    @Inject
-    private DataSource dataSource;
-
     @Test
     public void shouldModifyStatsWhenNewOrderCreated() {
-
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        String qtyQuery = "select count(orders_qty) from dashboard_stats";
-        int oldQty = jdbcTemplate.queryForObject(qtyQuery, Integer.class);
+        Date today = new Date();
+        int oldQty = dashboardService.getStats(today).getOrdersQty();
 
         Book anyBook = bookRepository.findAll().iterator().next();
         BookOrderLine orderLine = new BookOrderLine(anyBook, 2);
@@ -48,8 +43,8 @@ public class DashboardServiceTest extends AbstractTransactionalTestNGSpringConte
 
         dashboardService.collectStats();
 
-        int newQty = jdbcTemplate.queryForObject(qtyQuery, Integer.class);
+        int newQty = dashboardService.getStats(today).getOrdersQty();
 
-        Assert.assertEquals(newQty, oldQty + 1, "Orders qty");
+        assertEquals(newQty, oldQty + 1, "Orders qty");
     }
 }

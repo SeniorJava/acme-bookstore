@@ -1,8 +1,7 @@
 package acme.sales.bookstore.domain.test;
 
-import acme.sales.bookstore.domain.entities.Client;
 import acme.sales.bookstore.domain.services.AdministrationException;
-import acme.sales.bookstore.domain.services.AdministrationService;
+import acme.sales.bookstore.domain.services.DashboardService;
 import acme.sales.bookstore.domain.services.ProfilingAspect;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
@@ -11,6 +10,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import javax.inject.Inject;
+import java.util.Date;
 
 /**
  * @author vmuravlev
@@ -23,20 +23,14 @@ public class ProfilingActionsTest extends AbstractTransactionalTestNGSpringConte
     private ProfilingAspect aspect;
 
     @Inject
-    private AdministrationService administrationService;
+    private DashboardService dashboardService;
 
     @Test
-    public void shouldVerboseCreateNewUser() throws AdministrationException {
+    public void shouldVerboseCollectStatistic() throws AdministrationException {
         aspect.reset();
 
-        Client client = new Client();
-        client.setFirstName("Fred");
-        client.setLastName("Flinstone");
-        client.setAddress("Jurassic Period");
-        client.setPhone("111-33-22");
-
-        administrationService.hasDuplicate(client);
-        administrationService.createNewClient(client);
+        dashboardService.collectStats();
+        dashboardService.getStats(new Date());
 
         Assert.assertEquals(aspect.getCallCount(), 2, "Call count");
     }
